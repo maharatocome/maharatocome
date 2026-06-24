@@ -104,7 +104,7 @@ function PostCard({ post, currentUserId }: { post: Post; currentUserId?: string 
             <span key={t.skill.id} className="skill-tag">{t.skill.name}</span>
           ))}
         </div>
-        {currentUserId && currentUserId !== post.user.id && (
+        {(!currentUserId || currentUserId !== post.user.id) && (
           <button
             onClick={handleContact}
             disabled={contacting}
