@@ -64,19 +64,13 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="form-label">Mot de passe</label>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+              <label className="form-label" style={{ marginBottom: 0 }}>Mot de passe</label>
+              <Link href="/auth/forgot-password" style={{ fontSize: "12px", color: "var(--color-primary)", textDecoration: "none" }}>Mot de passe oublié ?</Link>
+            </div>
             <div style={{ position: "relative" }}>
-              <Lock size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--color-text-muted)" }} />
-              <input
-                id="login-password"
-                type="password"
-                className="input-field"
-                style={{ paddingLeft: "38px" }}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <Lock size={16} style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "var(--color-text-muted)" }} />
+              <input type="password" minLength={6} className="input-field" style={{ paddingLeft: "40px" }} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
           </div>
 
