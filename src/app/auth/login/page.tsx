@@ -70,7 +70,7 @@ export default function LoginPage() {
             </div>
             <div style={{ position: "relative" }}>
               <Lock size={16} style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "var(--color-text-muted)" }} />
-              <input type="password" minLength={6} className="input-field" style={{ paddingLeft: "40px" }} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <input type="password" className="input-field" style={{ paddingLeft: "40px" }} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
           </div>
 
