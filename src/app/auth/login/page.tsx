@@ -42,26 +42,7 @@ export default function LoginPage() {
           <p style={{ fontSize: "14px", color: "var(--color-text-secondary)" }}>Connectez-vous à votre compte professionnel</p>
         </div>
 
-        {/* Demo accounts */}
-        <div style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: "10px", padding: "12px 14px", marginBottom: "24px" }}>
-          <p style={{ fontSize: "12px", fontWeight: 600, color: "#A5B4FC", marginBottom: "6px" }}>🎯 Comptes de démo :</p>
-          {[
-            { email: "karim@talentdz.dz", role: "Expert Dev" },
-            { email: "sofia@startupdz.dz", role: "PME" },
-            { email: "yasmine@design.dz", role: "Designer" },
-          ].map((acc) => (
-            <button
-              key={acc.email}
-              onClick={() => { setEmail(acc.email); setPassword("password123"); }}
-              style={{ display: "block", fontSize: "12px", color: "var(--color-text-secondary)", padding: "2px 0", cursor: "pointer", background: "none", border: "none", textAlign: "left", transition: "color 0.15s" }}
-              onMouseOver={(e) => (e.currentTarget.style.color = "#A5B4FC")}
-              onMouseOut={(e) => (e.currentTarget.style.color = "var(--color-text-secondary)")}
-            >
-              → {acc.email} <span style={{ color: "var(--color-text-muted)" }}>({acc.role})</span>
-            </button>
-          ))}
-          <p style={{ fontSize: "11px", color: "var(--color-text-muted)", marginTop: "6px" }}>Mot de passe : password123</p>
-        </div>
+
 
         {/* Form */}
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>

@@ -45,6 +45,7 @@ const handler = NextAuth({
     signIn: "/auth/login",
   },
   secret: process.env.NEXTAUTH_SECRET || "talentdz-secret-2024",
+  debug: true,
 });
 
 export { handler as GET, handler as POST };
