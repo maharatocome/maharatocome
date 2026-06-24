@@ -8,13 +8,18 @@ export async function POST(req: NextRequest) {
     if (!email || !password || !name)
       return NextResponse.json({ error: "Champs requis manquants" }, { status: 400 });
 
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    const existing = await prisma.user.findFirst({
+      where: { email: { equals: cleanEmail, mode: "insensitive" } },
+    });
     if (existing)
       return NextResponse.json({ error: "Email déjà utilisé" }, { status: 400 });
 
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(cleanPassword, 10);
     const user = await prisma.user.create({
-      data: { email, password: hash, name, title, city, type: type || "EXPERT", bio },
+      data: { email: cleanEmail, password: hash, name, title, city, type: type || "EXPERT", bio },
     });
     return NextResponse.json({ id: user.id, email: user.email, name: user.name }, { status: 201 });
   } catch {
