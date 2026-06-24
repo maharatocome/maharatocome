@@ -65,6 +65,18 @@ export default function EditProfilePage() {
     setUserSkills((prev) => [...prev, { skillId, skillName: skill.name, level: "INTERMEDIAIRE" }]);
   }
 
+  const [customSkill, setCustomSkill] = useState("");
+
+  function handleAddCustomSkill(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && customSkill.trim()) {
+      e.preventDefault();
+      const name = customSkill.trim();
+      if (userSkills.find((us) => us.skillName.toLowerCase() === name.toLowerCase())) return;
+      setUserSkills((prev) => [...prev, { skillId: `temp-${Date.now()}`, skillName: name, level: "INTERMEDIAIRE" }]);
+      setCustomSkill("");
+    }
+  }
+
   function removeSkill(skillId: string) { setUserSkills((prev) => prev.filter((us) => us.skillId !== skillId)); }
   function updateSkillLevel(skillId: string, level: string) { setUserSkills((prev) => prev.map((us) => us.skillId === skillId ? { ...us, level } : us)); }
 
@@ -74,7 +86,7 @@ export default function EditProfilePage() {
     await fetch(`/api/users/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, avatar, skillIds: userSkills.map((us) => ({ skillId: us.skillId, level: us.level })) }),
+      body: JSON.stringify({ ...form, avatar, skills: userSkills.map((us) => ({ name: us.skillName, level: us.level })) }),
     });
     setSaving(false);
     setSuccess(true);
@@ -187,13 +199,22 @@ export default function EditProfilePage() {
           {/* Picker */}
           <div style={{ marginBottom: "16px" }}>
             <label className="form-label">Ajouter une compétence</label>
-            <div style={{ display: "flex", gap: "8px" }}>
-              <select className="select-field" id="skill-picker" onChange={(e) => { if (e.target.value) { addSkill(e.target.value); e.target.value = ""; } }}>
-                <option value="">Sélectionner une compétence...</option>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <select className="select-field" style={{ flex: 1, minWidth: "200px" }} id="skill-picker" onChange={(e) => { if (e.target.value) { addSkill(e.target.value); e.target.value = ""; } }}>
+                <option value="">Sélectionner une compétence existante...</option>
                 {allSkills.filter((s) => !userSkills.find((us) => us.skillId === s.id)).map((s) => (
                   <option key={s.id} value={s.id}>{s.name} ({s.category})</option>
                 ))}
               </select>
+              <input 
+                type="text" 
+                className="input-field" 
+                style={{ flex: 1, minWidth: "200px" }}
+                placeholder="Ou tapez une compétence et appuyez sur Entrée..." 
+                value={customSkill}
+                onChange={(e) => setCustomSkill(e.target.value)}
+                onKeyDown={handleAddCustomSkill}
+              />
             </div>
           </div>
 

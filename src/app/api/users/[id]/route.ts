@@ -29,7 +29,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     const { id } = await params;
     const data = await req.json();
-    const { skillIds, ...userData } = data;
+    const { skillIds, skills, ...userData } = data;
 
     const user = await prisma.user.update({
       where: { id },
@@ -45,7 +45,19 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       },
     });
 
-    if (skillIds !== undefined) {
+    if (skills !== undefined) {
+      await prisma.userSkill.deleteMany({ where: { userId: id } });
+      for (const item of skills) {
+        const skill = await prisma.skill.upsert({
+          where: { name: item.name },
+          update: {},
+          create: { name: item.name, category: "Autre" }
+        });
+        await prisma.userSkill.create({
+          data: { userId: id, skillId: skill.id, level: item.level || "INTERMEDIAIRE" },
+        });
+      }
+    } else if (skillIds !== undefined) {
       await prisma.userSkill.deleteMany({ where: { userId: id } });
       for (const item of skillIds) {
         await prisma.userSkill.create({
